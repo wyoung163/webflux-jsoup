@@ -66,9 +66,9 @@ public class AuthService {
         return jsonNode.get("access_token").asText();
     }
 
-    public Mono<Void> postUserInfo(String access_token) throws JsonProcessingException{
+    public Mono<User> postUserInfo(String access_token) throws JsonProcessingException{
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer" + access_token);
+        headers.add("Authorization", "Bearer " + access_token);
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(headers);
@@ -84,17 +84,17 @@ public class AuthService {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
         Long kakao_id = jsonNode.get("id").asLong();
-        String nickname = jsonNode.get("nickname").asText();
-        String email = jsonNode.get("email").asText();
+        String email = jsonNode.get("kakao_account").get("email").asText();
+        String nickname = jsonNode.get("properties").get("nickname").asText();
 
         return userRepository.save(
-                User.builder()
-                        .kakao_id(kakao_id)
-                        .nickname(nickname)
-                        .email(email)
-                        .createdAt(LocalDateTime.now())
-                        .updatedAt(LocalDateTime.now())
-                        .build()
-        ).then();
+                        User.builder()
+                                .kakao_id(kakao_id)
+                                .nickname(nickname)
+                                .email(email)
+                                .created_at(LocalDateTime.now())
+                                .updated_at(LocalDateTime.now())
+                                .build()
+                );
     }
 }
