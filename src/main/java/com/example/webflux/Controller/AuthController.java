@@ -1,16 +1,20 @@
 package com.example.webflux.Controller;
 
+import com.example.webflux.Config.JWT.JwtService;
 import com.example.webflux.Domain.User;
 import com.example.webflux.Service.AuthService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import jdk.swing.interop.SwingInterOpUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -23,16 +27,28 @@ public class AuthController {
     String redirectUri;
 
     private final AuthService authService;
+    private final JwtService jwtService;
 
     @GetMapping("/callback")
-    public ResponseEntity<Mono<User>> callback(@RequestParam("code") String code) throws JsonProcessingException {
+    //public ResponseEntity<Mono<User>> callback(@RequestParam("code") String code) throws JsonProcessingException
+    public Mono<String> callback(@RequestParam("code") String code) throws JsonProcessingException {
         String access_token = authService.getAccessTokenFromKakao(code);
-        authService.postUserInfo(access_token);
+        return authService.postUserInfo(access_token)
+                .map(jwtService::generateToken);
+
+        /*
         return ResponseEntity
                 .ok()
-                .header(HttpHeaders.SET_COOKIE, "Authorization=Bearer "+access_token)
+                .header(HttpHeaders.SET_COOKIE, "Authorization=Bearer " + user
+                        .map(jwtService::generateToken)
+                        .map(String::new)
+                        .switchIfEmpty(Mono.error(new ResponseStatusException(
+                        HttpStatus.UNAUTHORIZED
+                ))))
                 .body(
-                    authService.postUserInfo(access_token)
+                    user
                 );
+
+         */
     }
 }

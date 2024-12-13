@@ -18,6 +18,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import reactor.core.publisher.Mono;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -86,6 +88,8 @@ public class AuthService {
         Long kakao_id = jsonNode.get("id").asLong();
         String email = jsonNode.get("kakao_account").get("email").asText();
         String nickname = jsonNode.get("properties").get("nickname").asText();
+        List<String> roles = new ArrayList<>();
+        roles.add("user");
 
         return userRepository.save(
                         User.builder()
@@ -94,6 +98,7 @@ public class AuthService {
                                 .email(email)
                                 .created_at(LocalDateTime.now())
                                 .updated_at(LocalDateTime.now())
+                                .roles(roles)
                                 .build()
                 );
     }
