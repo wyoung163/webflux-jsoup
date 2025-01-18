@@ -8,7 +8,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
 
-@Data
+//@Data
 @Getter
 @Setter
 @Builder
@@ -19,21 +19,27 @@ public class Career {
     @Id
     private int id;
 
-    private int company;
+    private String company;
 
     private String category;
 
+    private String team;
+
     private String title;
 
-    private String content;
+    private String content; // 모집 내용
+
+    private String link; // 상세 공고 주소
+
+    private String experience; // 경력 여부
+
+    private String conditions; // 근로 조건
 
     private String requirements;
 
     private String preference;
 
-    private LocalDateTime start;
-
-    private LocalDateTime end;
+    private String duration;
 
     @CreatedDate
     private LocalDateTime created_at;
