@@ -1,6 +1,5 @@
 package com.example.webflux.Domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import nonapi.io.github.classgraph.json.Id;
 import org.springframework.data.annotation.CreatedDate;
@@ -44,6 +43,7 @@ public class User implements UserDetails {
 
     @Transient
     private List<String> roles = new ArrayList<>();
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
