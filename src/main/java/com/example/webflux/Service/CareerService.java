@@ -47,11 +47,13 @@ public class CareerService {
             document = connection.get();
             elements = document.select("div.detail_box");
 
-            System.out.println(link);
+            StringBuilder sb = new StringBuilder();
             for(Element e2: elements) {
                 // cloud사) 하나의 공고 페이지에 직무 여러 개 존재 예외 사항 존재
                 if(e2.select("div.detail_togglebox").size() > 0) {
-                    System.out.println(e2.select("div.detail_togglebox").select("h4.detail_title").text());
+                    //System.out.println(e2.select("div.detail_togglebox").select("h4.detail_title").text());
+                    sb.append(e2.select("div.detail_togglebox").select("h4.detail_title").text());
+                    sb.append("\n");
                 }
                 /*
                  본사) 하나의 공고 페이지에 직무 여러 개 존재 예외 사항 존재
@@ -60,21 +62,21 @@ public class CareerService {
                 if(e2.select("p").size() > 14) {
                     Elements ps = e2.select("p");
                     for(Element p: ps) {
-                        if(p.text().length() > 0) {
-                            System.out.println(p.text());
-                        } else {
-                            System.out.println(p.text());
-                        }
+                        //System.out.println(p.text());
+                        sb.append(p.text());
                     }
                 } else {
-                    System.out.println(e2.text());
+                    //System.out.println(e2.text());
+                    sb.append(e2.text());
                 }
+                sb.append("\n");
             }
 
             careers.add(
                     Career.builder()
                             .link(link)
                             .title(title)
+                            .content(sb.toString())
                             .company(company)
                             .category(category)
                             .team(team)
