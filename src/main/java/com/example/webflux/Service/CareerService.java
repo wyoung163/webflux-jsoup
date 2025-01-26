@@ -97,7 +97,7 @@ public class CareerService {
 
         ArrayList<Career> careers = new ArrayList<>();
         for(Element e: elements) {
-            String link = e.select("a.card_link").attr("onclick").toString();//.substring(6, -3);
+            String link = e.select("a.card_link").attr("onclick").toString().substring(6, 14);
             String title = e.select("h4.card_title").text();
             String company = title.split("]")[0].replace("[", "");
             Iterator<Element> iterator = e.select("dd.info_text").stream().iterator();
