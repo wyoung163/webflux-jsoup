@@ -38,7 +38,3 @@ out/
 
 ### resources
 src/main/resources
-src/main/java/com/example/webflux/Controller
-src/main/java/com/example/webflux/Domain
-src/main/java/com/example/webflux/Repository
-src/main/java/com/example/webflux/Service
