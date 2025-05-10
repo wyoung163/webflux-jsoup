@@ -17,6 +17,16 @@ public class CareerController {
     @Autowired
     private final CareerService careerService;
 
+    @GetMapping("/career/all")
+    public Flux<Career> searchAllCareers() throws IOException {
+        Flux<Career> allCareers;
+        allCareers = careerService.getNaverCareers();
+        allCareers = careerService.getNaverCloudCareers();
+        allCareers = careerService.getLineCareers();
+
+        return allCareers;
+    }
+
     //@Scheduled(cron = "0 0 0/6 * * *")
     @GetMapping("/career/naver")
     public Flux<Career> searchNaverCareers() throws IOException {

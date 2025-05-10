@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: api-request-cronjob
+  namespace: default
+spec:
+  schedule: "0 0 * * *"  # 매일 자정에 실행
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: api-request-container
+              image: curlimages/curl:latest
+              args:
+                - /bin/sh
+                - -c
+                - |
+                  curl -X GET "http://localhost:8080/career/all"
+          restartPolicy: OnFailure  # 실패 시 재시작, 성공 시 종료
